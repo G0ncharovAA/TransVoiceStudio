@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.ui.home
+package ru.gonchar17narod.selferificator.ui.fragments.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,14 +10,19 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.item_record.view.*
 import ru.gonchar17narod.selferificator.R
+import ru.gonchar17narod.selferificator.ui.items.RecordItem
 
 class HomeFragment : Fragment() {
 
+    private val groupieAdapter = GroupAdapter<GroupieViewHolder>()
     private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
@@ -35,35 +40,11 @@ class HomeFragment : Fragment() {
             }
         )
 
-        root.records_recycler_view.adapter = object : RecyclerView.Adapter<RecordHolder>() {
+        root.records_recycler_view.adapter =
+          //  RecordsAdapter()
+        groupieAdapter
 
-            override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
-            ) = RecordHolder()
-
-            override fun getItemCount() =
-                homeViewModel.liveRecords.value?.size ?: 0
-
-            override fun onBindViewHolder(holder: RecordHolder, position: Int) {
-                homeViewModel.liveRecords.value?.get(position)?.apply {
-                    with(holder.itemView) {
-                        text_record_name.text = file.name
-                        item_button_play.setOnClickListener {
-                            if (playing) {
-                                homeViewModel.stopPlaying()
-                                playing = false
-                                item_button_play.text = getString(R.string.play)
-                            } else {
-                                homeViewModel.startPlaying(file)
-                                playing = true
-                                item_button_play.text = getString(R.string.stop)
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        ItemTouchHelper(SwipeToDeleteCallback()).attachToRecyclerView(root.records_recycler_view)
 
         homeViewModel.liveRecords.observe(
             viewLifecycleOwner,
@@ -71,8 +52,17 @@ class HomeFragment : Fragment() {
                 root.records_recycler_view.adapter.let {
                     it?.notifyDataSetChanged()
                 }
+                groupieAdapter.clear()
+                groupieAdapter.addAll(
+                    it.map {
+                        RecordItem(
+                            homeViewModel
+                        )
+                    }
+                )
             }
         )
+
         return root
     }
 
@@ -115,4 +105,54 @@ class HomeFragment : Fragment() {
                 false
             )
     ) : RecyclerView.ViewHolder(itemView)
+
+    private inner class RecordsAdapter : RecyclerView.Adapter<RecordHolder>() {
+
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ) = RecordHolder()
+
+        override fun getItemCount() =
+            homeViewModel.liveRecords.value?.size ?: 0
+
+        override fun onBindViewHolder(holder: RecordHolder, position: Int) {
+            homeViewModel.liveRecords.value?.get(position)?.apply {
+                with(holder.itemView) {
+                    text_record_name.text = file.name
+                    item_button_play.setOnClickListener {
+                        if (playing) {
+                            homeViewModel.stopPlaying()
+                            playing = false
+                            item_button_play.text = getString(R.string.play)
+                        } else {
+                            homeViewModel.startPlaying(file)
+                            playing = true
+                            item_button_play.text = getString(R.string.stop)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private inner class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback(
+        0,
+        ItemTouchHelper.START or ItemTouchHelper.END
+    ) {
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            TODO("Not yet implemented")
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            homeViewModel.liveRecords.value?.get(viewHolder.adapterPosition)?.apply {
+                homeViewModel.deleteRecord(this)
+            }
+        }
+    }
 }

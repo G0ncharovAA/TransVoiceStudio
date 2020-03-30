@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.ui.notifications
+package ru.gonchar17narod.selferificator.ui.fragments.notifications
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

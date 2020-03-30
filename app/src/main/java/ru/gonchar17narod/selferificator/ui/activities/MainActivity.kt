@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.ui
+package ru.gonchar17narod.selferificator.ui.activities
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
