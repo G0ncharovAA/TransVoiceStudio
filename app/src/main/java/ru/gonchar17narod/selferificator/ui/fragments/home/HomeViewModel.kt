@@ -50,7 +50,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun startPlaying(file: File) {
+    fun startPlaying(record: Record) {
         if (
             (App.instance.getSystemService(Context.AUDIO_SERVICE) as AudioManager).isMusicActive
         ) {
@@ -60,16 +60,20 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         mediaPlayer?.let {
             it.release()
             mediaPlayer = null
+            resetPlayingStates()
+            record.playing = true
+            updatePlayingStates()
         }
 
         mediaPlayer = MediaPlayer().apply {
             setupAudio()
             setOnCompletionListener {
                 it.release()
-                resetPlayingStates()
+                record.playing = false
+                updatePlayingStates()
             }
             setDataSource(
-                file.absolutePath
+                record.file.absolutePath
             )
             prepare()
             start()
@@ -80,6 +84,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         mediaPlayer?.release()
         mediaPlayer = null
         resetPlayingStates()
+        updatePlayingStates()
     }
 
     fun deleteRecord(record: Record) =
@@ -105,6 +110,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             value?.forEach {
                 it.playing = false
             }
+        }
+
+    private fun updatePlayingStates() =
+        with(liveRecords) {
             value = value
         }
 

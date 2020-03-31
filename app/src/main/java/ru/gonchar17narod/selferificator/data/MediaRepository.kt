@@ -1,46 +1,24 @@
 package ru.gonchar17narod.selferificator.data
 
-import android.media.AudioManager
-import android.media.MediaPlayer
-import android.media.MediaRecorder
-import android.net.Uri
 import ru.gonchar17narod.selferificator.App
-import ru.gonchar17narod.selferificator.utlis.clear
+import ru.gonchar17narod.selferificator.business.Record
 import java.io.File
 
 object MediaRepository {
 
-    val MEDIA_FILE = "record.mp3"
-    val recordFile = File(App.instance.filesDir, MEDIA_FILE)
-    val mediaRecorder = MediaRecorder().apply {
-        setAudioSource(MediaRecorder.AudioSource.MIC)
-        setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        setOutputFile(recordFile.absolutePath)
-    }
-    val mediaPlayer = MediaPlayer().apply {
-        setAudioStreamType(AudioManager.STREAM_MUSIC)
-      //  setDataSource(App.instance, Uri.parse(recordFile.absolutePath))
-    }
+    fun getNewFile(): File =
+        File(
+            App.instance.filesDir,
+            "record_${System.currentTimeMillis()}.mp3"
+        )
 
-    fun startRecording() {
-        mediaRecorder.prepare()
-        mediaRecorder.start()
-    }
+    fun getAllRecords() =
+        App.instance.filesDir.listFiles()
+            ?.toList()
+            ?.filter {
+                it.name.endsWith(".mp3", true)
+            }
 
-    fun stopRecording() {
-        mediaRecorder.stop()
-    }
-
-    fun startPlaying() {
-        mediaPlayer.prepare()
-        mediaPlayer.start()
-    }
-
-    fun stopPlaying() {
-        mediaPlayer.stop()
-    }
-
-    fun clearRecord() =
-        recordFile.clear()
+    fun deleteRecord(record: Record) =
+        record.file.deleteRecursively()
 }

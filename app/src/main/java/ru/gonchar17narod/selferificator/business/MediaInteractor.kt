@@ -1,22 +1,15 @@
 package ru.gonchar17narod.selferificator.business
 
-import ru.gonchar17narod.selferificator.App
+import ru.gonchar17narod.selferificator.data.MediaRepository
 import java.io.File
 
 object MediaInteractor {
 
     fun getNewFile(): File =
-        File(
-            App.instance.filesDir,
-            "record_${System.currentTimeMillis()}.mp3"
-        )
+        MediaRepository.getNewFile()
 
     fun getAllRecords() =
-        App.instance.filesDir.listFiles()
-            ?.toList()
-            ?.filter {
-                it.name.endsWith(".mp3", true)
-            }
+        MediaRepository.getAllRecords()
             ?.sortedByDescending {
                 it.name
             }
@@ -27,5 +20,5 @@ object MediaInteractor {
             }
 
     fun deleteRecord(record: Record) =
-       record.file.deleteRecursively()
+        MediaRepository.deleteRecord(record)
 }

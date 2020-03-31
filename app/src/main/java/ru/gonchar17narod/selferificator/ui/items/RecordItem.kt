@@ -24,7 +24,7 @@ class RecordItem(
                         playing = false
                         item_button_play.text = context.getString(R.string.play)
                     } else {
-                        homeViewModel.startPlaying(file)
+                        homeViewModel.startPlaying(this@apply)
                         playing = true
                         item_button_play.text = context.getString(R.string.stop)
                     }

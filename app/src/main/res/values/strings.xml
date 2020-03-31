@@ -9,6 +9,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="play">play</string>
     <string name="stop">stop</string>
+    <string name="idle">Idle</string>
     <string name="recording">Recording</string>
     <string name="playing">Playing</string>
 </resources>

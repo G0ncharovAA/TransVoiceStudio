@@ -78,9 +78,11 @@ class HomeFragment : Fragment() {
             when (event.action) {
                 ACTION_DOWN -> {
                     homeViewModel.startRecording()
+                    media_indicator.text = getString(R.string.recording)
                 }
                 ACTION_UP -> {
                     homeViewModel.stopRecording()
+                    media_indicator.text = getString(R.string.idle)
                 }
             }
             false
@@ -89,14 +91,16 @@ class HomeFragment : Fragment() {
         button_playing.setOnTouchListener { v, event ->
             when (event.action) {
                 ACTION_DOWN -> {
-                    homeViewModel.liveRecords.value?.first()?.file?.apply {
+                    homeViewModel.liveRecords.value?.first()?.apply {
                         homeViewModel.startPlaying(
                             this
                         )
+                        media_indicator.text = getString(R.string.playing)
                     }
                 }
                 ACTION_UP -> {
                     homeViewModel.stopPlaying()
+                    media_indicator.text = getString(R.string.idle)
                 }
             }
             false
@@ -141,7 +145,7 @@ class HomeFragment : Fragment() {
                     } else {
                         item_button_play.text = getString(R.string.play)
                         item_button_play.setOnClickListener {
-                            homeViewModel.startPlaying(file)
+                            homeViewModel.startPlaying(this@apply)
                             playing = true
                             recordsAdapter.notifyItemChanged(position)
                         }
