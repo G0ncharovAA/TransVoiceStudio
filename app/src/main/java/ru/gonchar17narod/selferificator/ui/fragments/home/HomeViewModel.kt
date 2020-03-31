@@ -5,6 +5,7 @@ import android.content.Context
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
+import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import ru.gonchar17narod.selferificator.App
@@ -19,63 +20,66 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
-    val liveRecordingState = MutableLiveData<Boolean>()
-    val livePlayingState = MutableLiveData<Boolean>()
     val liveRecords = MutableLiveData<List<Record>>()
 
-    val mMediaRecorder = MediaRecorder().apply {
+    private val mMediaRecorder = MediaRecorder().apply {
         setOnInfoListener { mr, what, extra ->
-
+            Log.i("VERF", "what: $what extra: $extra")
         }
     }
-    val mMediaplayer = MediaPlayer().apply {
-        setOnCompletionListener {
-            resetPlayngStates()
-        }
-    }
+    private var mediaPlayer: MediaPlayer? = null
 
     init {
         liveRecords.value = MediaInteractor.getAllRecords()
         setupRecorder()
-        setupPlayer()
     }
 
     fun startRecording() =
-        with (mMediaRecorder) {
+        with(mMediaRecorder) {
             setOutputFile(MediaInteractor.getNewFile().absolutePath)
             prepare()
             start()
         }
 
     fun stopRecording() {
-        mMediaRecorder.stop()
-        setupRecorder()
-        refreshRecordsList()
+        try {
+            mMediaRecorder.stop()
+            setupRecorder()
+        } finally {
+            refreshRecordsList()
+        }
     }
 
     fun startPlaying(file: File) {
         if (
             (App.instance.getSystemService(Context.AUDIO_SERVICE) as AudioManager).isMusicActive
         ) {
-            stopPlaying()
+            Log.i("VERF", "Busy")
         }
-        try {
-            with(mMediaplayer) {
-                setDataSource(
-                    file.absolutePath
-                )
-                prepare()
-                start()
-            }
-        } catch (e: Exception) {
 
+        mediaPlayer?.let {
+            it.release()
+            mediaPlayer = null
+        }
+
+        mediaPlayer = MediaPlayer().apply {
+            setupAudio()
+            setOnCompletionListener {
+                it.release()
+                resetPlayingStates()
+            }
+            setDataSource(
+                file.absolutePath
+            )
+            prepare()
+            start()
         }
     }
 
     fun stopPlaying() {
-        mMediaplayer.stop()
-        setupPlayer()
-        resetPlayngStates()
+        mediaPlayer?.release()
+        mediaPlayer = null
+        resetPlayingStates()
     }
 
     fun deleteRecord(record: Record) =
@@ -94,23 +98,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     override fun onCleared() {
         mMediaRecorder.release()
-        mMediaplayer.release()
     }
 
-    private fun resetPlayngStates() =
-        liveRecords.value?.forEach {
-            it.playing = false
+    private fun resetPlayingStates() =
+        with(liveRecords) {
+            value?.forEach {
+                it.playing = false
+            }
+            value = value
         }
 
     private fun setupRecorder() {
         with(mMediaRecorder) {
-            reset()
-            setupAudio()
-        }
-    }
-
-    private fun setupPlayer() {
-        with(mMediaplayer) {
             reset()
             setupAudio()
         }

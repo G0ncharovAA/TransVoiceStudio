@@ -4,11 +4,14 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
+import android.media.MediaRecorder.AudioEncoder.AAC
+import android.media.MediaRecorder.AudioSource.MIC
+import android.media.MediaRecorder.OutputFormat.MPEG_4
 
 fun MediaRecorder.setupAudio() {
-    setAudioSource(MediaRecorder.AudioSource.MIC)
-    setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-    setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+    setAudioSource(MIC)
+    setOutputFormat(MPEG_4)
+    setAudioEncoder(AAC)
 }
 
 fun MediaPlayer.setupAudio() {

@@ -4,8 +4,13 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.MotionEvent.ACTION_DOWN
+import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -23,6 +28,7 @@ import ru.gonchar17narod.selferificator.ui.items.RecordItem
 class HomeFragment : Fragment() {
 
     private val groupieAdapter = GroupAdapter<GroupieViewHolder>()
+    private val recordsAdapter = RecordsAdapter()
     private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
@@ -41,8 +47,8 @@ class HomeFragment : Fragment() {
         )
 
         root.records_recycler_view.adapter =
-          //  RecordsAdapter()
-        groupieAdapter
+            recordsAdapter
+        //groupieAdapter
 
         ItemTouchHelper(SwipeToDeleteCallback()).attachToRecyclerView(root.records_recycler_view)
 
@@ -52,14 +58,14 @@ class HomeFragment : Fragment() {
                 root.records_recycler_view.adapter.let {
                     it?.notifyDataSetChanged()
                 }
-                groupieAdapter.clear()
-                groupieAdapter.addAll(
-                    it.map {
-                        RecordItem(
-                            homeViewModel
-                        )
-                    }
-                )
+//                groupieAdapter.clear()
+//                groupieAdapter.addAll(
+//                    it.map {
+//                        RecordItem(
+//                            homeViewModel
+//                        )
+//                    }
+//                )
             }
         )
 
@@ -70,30 +76,30 @@ class HomeFragment : Fragment() {
 
         button_recording.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
+                ACTION_DOWN -> {
                     homeViewModel.startRecording()
                 }
-                MotionEvent.ACTION_UP -> {
+                ACTION_UP -> {
                     homeViewModel.stopRecording()
                 }
             }
-            true
+            false
         }
 
         button_playing.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
+                ACTION_DOWN -> {
                     homeViewModel.liveRecords.value?.first()?.file?.apply {
                         homeViewModel.startPlaying(
                             this
                         )
                     }
                 }
-                MotionEvent.ACTION_UP -> {
+                ACTION_UP -> {
                     homeViewModel.stopPlaying()
                 }
             }
-            true
+            false
         }
     }
 
@@ -103,7 +109,12 @@ class HomeFragment : Fragment() {
                 R.layout.item_record,
                 null,
                 false
-            )
+            ).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    MATCH_PARENT,
+                    WRAP_CONTENT
+                )
+            }
     ) : RecyclerView.ViewHolder(itemView)
 
     private inner class RecordsAdapter : RecyclerView.Adapter<RecordHolder>() {
@@ -120,15 +131,19 @@ class HomeFragment : Fragment() {
             homeViewModel.liveRecords.value?.get(position)?.apply {
                 with(holder.itemView) {
                     text_record_name.text = file.name
-                    item_button_play.setOnClickListener {
-                        if (playing) {
+                    if (playing) {
+                        item_button_play.text = getString(R.string.stop)
+                        item_button_play.setOnClickListener {
                             homeViewModel.stopPlaying()
                             playing = false
-                            item_button_play.text = getString(R.string.play)
-                        } else {
+                            recordsAdapter.notifyItemChanged(position)
+                        }
+                    } else {
+                        item_button_play.text = getString(R.string.play)
+                        item_button_play.setOnClickListener {
                             homeViewModel.startPlaying(file)
                             playing = true
-                            item_button_play.text = getString(R.string.stop)
+                            recordsAdapter.notifyItemChanged(position)
                         }
                     }
                 }

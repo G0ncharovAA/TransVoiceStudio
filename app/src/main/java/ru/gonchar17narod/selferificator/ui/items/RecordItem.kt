@@ -22,11 +22,11 @@ class RecordItem(
                     if (playing) {
                         homeViewModel.stopPlaying()
                         playing = false
-                        item_button_play.text = context.getString(R.string.stop)
+                        item_button_play.text = context.getString(R.string.play)
                     } else {
                         homeViewModel.startPlaying(file)
                         playing = true
-                        item_button_play.text = context.getString(R.string.play)
+                        item_button_play.text = context.getString(R.string.stop)
                     }
                 }
             }

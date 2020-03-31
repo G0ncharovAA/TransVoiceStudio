@@ -15,7 +15,6 @@
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textSize="20sp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,9 +23,10 @@
         android:id="@+id/button_recording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/recording"
-        android:focusable="true"
+        android:background="@drawable/button_selector"
         android:clickable="true"
+        android:focusable="true"
+        android:text="@string/recording"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_playing"
         app:layout_constraintHorizontal_bias="0.5"
@@ -38,9 +38,10 @@
         android:id="@+id/button_playing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/playing"
-        android:focusable="true"
+        android:background="@drawable/button_selector"
         android:clickable="true"
+        android:focusable="true"
+        android:text="@string/playing"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -52,8 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="36dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_playing" />
 </androidx.constraintlayout.widget.ConstraintLayout>
