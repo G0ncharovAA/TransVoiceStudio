@@ -12,7 +12,6 @@ import ru.gonchar17narod.selferificator.App
 import ru.gonchar17narod.selferificator.business.MediaInteractor
 import ru.gonchar17narod.selferificator.business.Record
 import ru.gonchar17narod.selferificator.utlis.setupAudio
-import java.io.File
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -114,7 +113,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun updatePlayingStates() =
         with(liveRecords) {
-            value = value
+            value = value // is there any more reliable way to update LivaData?
         }
 
     private fun setupRecorder() {
