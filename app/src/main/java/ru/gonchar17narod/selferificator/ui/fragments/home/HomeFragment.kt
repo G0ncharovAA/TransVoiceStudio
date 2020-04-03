@@ -72,8 +72,7 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         button_recording.setOnTouchListener { v, event ->
             when (event.action) {
                 ACTION_DOWN -> {
@@ -105,6 +104,7 @@ class HomeFragment : Fragment() {
             }
             false
         }
+        super.onActivityCreated(savedInstanceState)
     }
 
     private inner class RecordHolder(
