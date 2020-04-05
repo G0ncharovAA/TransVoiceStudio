@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.ui.activities
+package ru.gonchar17narod.selferificator.view.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.ui.fragments.home
+package ru.gonchar17narod.selferificator.view.fragments.home
 
 import android.app.Application
 import android.content.Context

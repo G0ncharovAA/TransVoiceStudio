@@ -19,6 +19,6 @@ object MediaInteractor {
                 )
             }
 
-    fun deleteRecord(record: Record) =
+    suspend fun deleteRecord(record: Record) =
         MediaRepository.deleteRecord(record)
 }

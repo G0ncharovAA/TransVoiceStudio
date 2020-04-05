@@ -47,17 +47,12 @@ class SpectreRepository(private val samplingRate: Int) {
     }
 
     /**
-     * Listener prototype used in the @method start
-     */
-    interface OnBufferReadyListener {
-        fun onBufferReady(buffer: ShortArray)
-    }
-
-    /**
      * Start recording in a independent thread
      * @param listener is call every time a sample is ready
      */
-    fun start(listener: OnBufferReadyListener) {
+    fun start(
+        listener: (ShortArray) -> Unit
+    ) {
         if (!run) {
             audioRecord?.let {
                 run = true
@@ -71,7 +66,7 @@ class SpectreRepository(private val samplingRate: Int) {
                             0,
                             bufferLength
                         )
-                        listener.onBufferReady(recordBuffer)
+                        listener.invoke(recordBuffer)
                     }
                 }).apply {
                     start()

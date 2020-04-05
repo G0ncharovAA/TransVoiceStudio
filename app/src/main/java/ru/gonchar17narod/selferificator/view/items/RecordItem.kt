@@ -1,11 +1,11 @@
-package ru.gonchar17narod.selferificator.ui.items
+package ru.gonchar17narod.selferificator.view.items
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.item_record.view.*
 import ru.gonchar17narod.selferificator.R
-import ru.gonchar17narod.selferificator.ui.fragments.home.HomeViewModel
+import ru.gonchar17narod.selferificator.view.fragments.home.HomeViewModel
 
 class RecordItem(
     val homeViewModel: HomeViewModel

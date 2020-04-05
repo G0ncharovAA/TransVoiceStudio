@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.ui.fragments.dashboard
+package ru.gonchar17narod.selferificator.view.fragments.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,11 @@ class DashboardFragment : Fragment() {
     private lateinit var dashboardViewModel: DashboardViewModel
 
     private val samplingRate = 44100
-    private val fftResolution = 1024
+    private val fftResolution =
+        //1024
+        //2048
+        4096
+        //8192
     private val continuousRecord =
         SpectreRepository(samplingRate)
     private val soundEngine = SoundEngine().apply {
@@ -32,12 +36,12 @@ class DashboardFragment : Fragment() {
     private var im = FloatArray(fftResolution) // buffer holding imaginary part during fft process
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
+            ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
         val textView: TextView = root.findViewById(R.id.text_dashboard)
         dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
@@ -52,7 +56,6 @@ class DashboardFragment : Fragment() {
             setSamplingRate(samplingRate)
         }
         loadEngine()
-
         super.onActivityCreated(savedInstanceState)
     }
 
@@ -77,34 +80,30 @@ class DashboardFragment : Fragment() {
 
     private fun startRecording() =
         continuousRecord.start(
-        object : SpectreRepository.OnBufferReadyListener {
-            override fun onBufferReady(buffer: ShortArray) {
-                getTrunks(buffer)
-            }
-        }
+            { buffer -> getTrunks(buffer) }
         )
 
     private fun stopRecording() =
         continuousRecord.stop()
 
     private fun loadEngine() =
-    with(continuousRecord) {
+        with(continuousRecord) {
 
-        // Stop and release recorder if running
-        stop()
-        release()
+            // Stop and release recorder if running
+            stop()
+            release()
 
-        // Prepare recorder
-        prepare(fftResolution) // Record buffer size if forced to be a multiple of the fft resolution
+            // Prepare recorder
+            prepare(fftResolution) // Record buffer size if forced to be a multiple of the fft resolution
 
-        // Build buffers for runtime
-        val n = fftResolution
+            // Build buffers for runtime
+            val n = fftResolution
 
-        val l: Int = bufferLength / (n / 2)
-        for (i in 0 until l + 1) {  //+1 because the last one has to be used again and sent to first position
-            bufferStack.add(ShortArray(n / 2)) // preallocate to avoid new within processing loop
+            val l: Int = bufferLength / (n / 2)
+            for (i in 0 until l + 1) {  //+1 because the last one has to be used again and sent to first position
+                bufferStack.add(ShortArray(n / 2)) // preallocate to avoid new within processing loop
+            }
         }
-    }
 
     private fun getTrunks(recordBuffer: ShortArray) {
         val n: Int = fftResolution

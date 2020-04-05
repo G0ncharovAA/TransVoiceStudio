@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.ui.fragments.dashboard
+package ru.gonchar17narod.selferificator.view.fragments.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

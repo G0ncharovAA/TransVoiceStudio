@@ -1,9 +1,8 @@
-package ru.gonchar17narod.selferificator.ui.fragments.home
+package ru.gonchar17narod.selferificator.view.fragments.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
@@ -23,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.item_record.view.*
 import ru.gonchar17narod.selferificator.R
-import ru.gonchar17narod.selferificator.ui.items.RecordItem
 
 class HomeFragment : Fragment() {
 
