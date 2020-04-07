@@ -8,14 +8,26 @@ import java.io.File
 
 object MediaRepository {
 
+    const val RECORDS_FOLDER_NAME = "records"
+    private val recordsFolder = File(
+        App.instance.filesDir,
+        "$RECORDS_FOLDER_NAME${File.separator}"
+    )
+
+    fun prepareRecordsFolder() {
+        if (!recordsFolder.exists()) {
+            recordsFolder.mkdir()
+        }
+    }
+
     fun getNewFile(): File =
         File(
-            App.instance.filesDir,
+            recordsFolder,
             "record_${System.currentTimeMillis()}.mp3"
         )
 
     fun getAllRecords() =
-        App.instance.filesDir.listFiles()
+        recordsFolder.listFiles()
             ?.toList()
             ?.filter {
                 it.name.endsWith(".mp3", true)

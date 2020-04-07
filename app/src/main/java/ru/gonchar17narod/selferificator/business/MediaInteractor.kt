@@ -5,6 +5,9 @@ import java.io.File
 
 object MediaInteractor {
 
+    fun prepareRecordsFolder() =
+        MediaRepository.prepareRecordsFolder()
+
     fun getNewFile(): File =
         MediaRepository.getNewFile()
 
