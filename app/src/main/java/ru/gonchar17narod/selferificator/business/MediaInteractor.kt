@@ -8,17 +8,17 @@ object MediaInteractor {
     fun getNewFile(): File =
         MediaRepository.getNewFile()
 
-    fun getAllRecords() =
+    fun getAllRecords(): List<RecordEntity> =
         MediaRepository.getAllRecords()
             ?.sortedByDescending {
                 it.name
             }
             ?.map {
-                Record(
+                RecordEntity(
                     it
                 )
-            }
+            } ?: emptyList()
 
-    suspend fun deleteRecord(record: Record) =
+    suspend fun deleteRecord(record: RecordEntity) =
         MediaRepository.deleteRecord(record)
 }

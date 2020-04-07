@@ -3,7 +3,7 @@ package ru.gonchar17narod.selferificator.data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.gonchar17narod.selferificator.App
-import ru.gonchar17narod.selferificator.business.Record
+import ru.gonchar17narod.selferificator.business.RecordEntity
 import java.io.File
 
 object MediaRepository {
@@ -21,7 +21,7 @@ object MediaRepository {
                 it.name.endsWith(".mp3", true)
             }
 
-    suspend fun deleteRecord(record: Record) =
+    suspend fun deleteRecord(record: RecordEntity) =
         withContext(Dispatchers.IO) {
             record.file.deleteRecursively()
         }

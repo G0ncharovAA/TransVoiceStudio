@@ -25,7 +25,6 @@ import ru.gonchar17narod.selferificator.R
 
 class HomeFragment : Fragment() {
 
-    private val groupieAdapter = GroupAdapter<GroupieViewHolder>()
     private val recordsAdapter = RecordsAdapter()
     private lateinit var homeViewModel: HomeViewModel
 
@@ -44,10 +43,7 @@ class HomeFragment : Fragment() {
             }
         )
 
-        root.records_recycler_view.adapter =
-            recordsAdapter
-        //groupieAdapter
-
+        root.records_recycler_view.adapter = recordsAdapter
         ItemTouchHelper(SwipeToDeleteCallback()).attachToRecyclerView(root.records_recycler_view)
 
         homeViewModel.liveRecords.observe(
@@ -56,17 +52,8 @@ class HomeFragment : Fragment() {
                 root.records_recycler_view.adapter.let {
                     it?.notifyDataSetChanged()
                 }
-//                groupieAdapter.clear()
-//                groupieAdapter.addAll(
-//                    it.map {
-//                        RecordItem(
-//                            homeViewModel
-//                        )
-//                    }
-//                )
             }
         )
-
         return root
     }
 
@@ -84,7 +71,6 @@ class HomeFragment : Fragment() {
             }
             false
         }
-
         button_playing.setOnTouchListener { v, event ->
             when (event.action) {
                 ACTION_DOWN -> {

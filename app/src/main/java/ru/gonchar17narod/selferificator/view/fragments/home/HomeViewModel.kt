@@ -10,8 +10,9 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import ru.gonchar17narod.selferificator.App
 import ru.gonchar17narod.selferificator.business.MediaInteractor
-import ru.gonchar17narod.selferificator.business.Record
+import ru.gonchar17narod.selferificator.business.RecordEntity
 import ru.gonchar17narod.selferificator.utlis.setupAudio
+import java.lang.Exception
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -19,13 +20,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
-    val liveRecords = MutableLiveData<List<Record>>()
+    val liveRecords = MutableLiveData<List<RecordEntity>>()
 
-    private val mMediaRecorder = MediaRecorder().apply {
-        setOnInfoListener { mr, what, extra ->
-            Log.i("VERF", "what: $what extra: $extra")
-        }
-    }
+    private val mMediaRecorder = MediaRecorder()
     private var mediaPlayer: MediaPlayer? = null
 
     init {
@@ -43,19 +40,17 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun stopRecording() {
         try {
             mMediaRecorder.stop()
+        }
+        catch (e: Exception) {
+
+        }
+        finally {
             setupRecorder()
-        } finally {
             refreshRecordsList()
         }
     }
 
-    fun startPlaying(record: Record) {
-        if (
-            (App.instance.getSystemService(Context.AUDIO_SERVICE) as AudioManager).isMusicActive
-        ) {
-            Log.i("VERF", "Busy")
-        }
-
+    fun startPlaying(record: RecordEntity) {
         mediaPlayer?.let {
             it.release()
             mediaPlayer = null
@@ -63,7 +58,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             record.playing = true
             updatePlayingStates()
         }
-
         mediaPlayer = MediaPlayer().apply {
             setupAudio()
             setOnCompletionListener {
@@ -86,7 +80,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         updatePlayingStates()
     }
 
-    fun deleteRecord(record: Record) =
+    fun deleteRecord(record: RecordEntity) =
         viewModelScope.launch {
             try {
                 MediaInteractor.deleteRecord(
