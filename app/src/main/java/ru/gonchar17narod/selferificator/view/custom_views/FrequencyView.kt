@@ -13,11 +13,6 @@ import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 import ru.gonchar17narod.selferificator.R
 import kotlin.math.roundToInt
 
-/**
- * Class associated with the spectrogram view
- * Handles events:
- * onSizeChanged, onTouchEvent, onDraw
- */
 class FrequencyView : View {
 
     private var mWidth = 0
@@ -159,7 +154,7 @@ class FrequencyView : View {
     private fun ave(s: Int, d: Int, p: Float): Int =
         s + Math.round(p * (d - s))
 
-    fun getInterpolatedColor(colors: IntArray?, unit: Float): Int {
+    private fun getInterpolatedColor(colors: IntArray?, unit: Float): Int {
         if (unit <= 0) return colors!![0]
         if (unit >= 1) return colors!![colors.size - 1]
         var p = unit * (colors!!.size - 1)

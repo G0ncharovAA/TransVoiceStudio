@@ -123,15 +123,11 @@ class HomeFragment : Fragment() {
                         item_button_play.text = getString(R.string.stop)
                         item_button_play.setOnClickListener {
                             homeViewModel.stopPlaying()
-                            playing = false
-                            recordsAdapter.notifyItemChanged(position)
                         }
                     } else {
                         item_button_play.text = getString(R.string.play)
                         item_button_play.setOnClickListener {
                             homeViewModel.startPlaying(this@apply)
-                            playing = true
-                            recordsAdapter.notifyItemChanged(position)
                         }
                     }
                 }

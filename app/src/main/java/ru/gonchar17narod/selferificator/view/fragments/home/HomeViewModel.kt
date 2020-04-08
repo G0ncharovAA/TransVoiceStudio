@@ -40,36 +40,39 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun stopRecording() {
         try {
             mMediaRecorder.stop()
-        }
-        catch (e: Exception) {
-
-        }
-        finally {
+        } catch (e: Exception) {
+            MediaInteractor.deleteLastRecord()
+        } finally {
             setupRecorder()
             refreshRecordsList()
         }
     }
 
     fun startPlaying(record: RecordEntity) {
+        resetPlayingStates()
+        record.playing = true
         mediaPlayer?.let {
             it.release()
             mediaPlayer = null
-            resetPlayingStates()
-            record.playing = true
-            updatePlayingStates()
         }
-        mediaPlayer = MediaPlayer().apply {
-            setupAudio()
-            setOnCompletionListener {
-                it.release()
-                record.playing = false
-                updatePlayingStates()
+        try {
+            mediaPlayer = MediaPlayer().apply {
+                setupAudio()
+                setOnCompletionListener {
+                    it.release()
+                    record.playing = false
+                    updatePlayingStates()
+                }
+                setDataSource(
+                    record.file.absolutePath
+                )
+                prepare()
+                start()
             }
-            setDataSource(
-                record.file.absolutePath
-            )
-            prepare()
-            start()
+        } catch (e: Exception) {
+            record.playing = false
+        } finally {
+            updatePlayingStates()
         }
     }
 

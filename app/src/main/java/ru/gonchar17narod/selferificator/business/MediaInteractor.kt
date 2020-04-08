@@ -24,4 +24,7 @@ object MediaInteractor {
 
     suspend fun deleteRecord(record: RecordEntity) =
         MediaRepository.deleteRecord(record)
+
+    fun deleteLastRecord() =
+        MediaRepository.deleteLastRecord()
 }

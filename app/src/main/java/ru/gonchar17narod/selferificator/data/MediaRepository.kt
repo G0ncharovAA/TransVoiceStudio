@@ -37,4 +37,7 @@ object MediaRepository {
         withContext(Dispatchers.IO) {
             record.file.deleteRecursively()
         }
+
+    fun deleteLastRecord() =
+       getAllRecords()?.firstOrNull()?.deleteRecursively()
 }
