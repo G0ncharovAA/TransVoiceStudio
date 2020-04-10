@@ -23,5 +23,6 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
+        android:background="@color/colorAccent"
         android:elevation="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

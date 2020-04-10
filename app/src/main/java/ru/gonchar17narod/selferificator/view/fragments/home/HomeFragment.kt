@@ -120,12 +120,12 @@ class HomeFragment : Fragment() {
                 with(holder.itemView) {
                     text_record_name.text = file.name
                     if (playing) {
-                        item_button_play.text = getString(R.string.stop)
+                        item_button_play.setImageResource(R.drawable.ic_pause)
                         item_button_play.setOnClickListener {
                             homeViewModel.stopPlaying()
                         }
                     } else {
-                        item_button_play.text = getString(R.string.play)
+                        item_button_play.setImageResource(R.drawable.ic_play)
                         item_button_play.setOnClickListener {
                             homeViewModel.startPlaying(this@apply)
                         }

@@ -2,6 +2,7 @@ package ru.gonchar17narod.selferificator.view.custom_views
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -31,8 +32,21 @@ class FrequencyView : View {
     private var pos = 0
     private var samplingRate = 0
     private lateinit var magnitudes: FloatArray
-    private val colorFire = intArrayOf(-0x1, -0x100, -0x10000, -0x1000000)
+    private val colorFire =
+        intArrayOf(-0x1, -0x100, -0x10000, -0x1000000)
+    private var colors: IntArray
 
+    init {
+        with(context.resources) {
+            colors = arrayOf(
+                getColor(R.color.flag_outter),
+                getColor(R.color.flag_inner),
+                getColor(R.color.flag_center),
+                getColor(R.color.flag_inner_dark),
+                getColor(R.color.flag_outter_dark)
+            ).toIntArray()
+        }
+    }
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(
@@ -105,7 +119,7 @@ class FrequencyView : View {
             ]
             val db =
                 Math.max(0.0, -20 * Math.log10(mag.toDouble())).toFloat()
-            val c = getInterpolatedColor(colorFire, db * 0.009f)
+            val c = getInterpolatedColor(colors, db * 0.009f)
             paint.color = c
             val x = pos % rWidth
             this.canvas.drawPoint(x.toFloat(), i.toFloat(), paint)
@@ -121,10 +135,14 @@ class FrequencyView : View {
         // Draw frequency scale
         val ratio = 0.7f * resources.displayMetrics.density
         paint.textSize = 12f * ratio
-        paint.color = Color.BLACK
+        paint.color = context.resources.getColor(R.color.flag_outter_dark)
         canvas.drawRect(rWidth.toFloat(), 0f, mWidth.toFloat(), mHeight.toFloat(), paint)
-        paint.color = Color.WHITE
-        canvas.drawText("Hz", rWidth.toFloat(), 12 * ratio, paint)
+        paint.color = context.resources.getColor(R.color.flag_center)
+        canvas.drawText(
+            context.getString(R.string.herz),
+            rWidth.toFloat(),
+            12 * ratio, paint
+        )
         var i = 0
         while (i < (maxValue - 120)) {
             canvas.drawText(
@@ -154,10 +172,10 @@ class FrequencyView : View {
     private fun ave(s: Int, d: Int, p: Float): Int =
         s + Math.round(p * (d - s))
 
-    private fun getInterpolatedColor(colors: IntArray?, unit: Float): Int {
-        if (unit <= 0) return colors!![0]
-        if (unit >= 1) return colors!![colors.size - 1]
-        var p = unit * (colors!!.size - 1)
+    private fun getInterpolatedColor(colors: IntArray, unit: Float): Int {
+        if (unit <= 0) return colors[0]
+        if (unit >= 1) return colors[colors.size - 1]
+        var p = unit * (colors.size - 1)
         val i = p.toInt()
         p -= i.toFloat()
 
