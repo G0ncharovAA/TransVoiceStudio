@@ -74,7 +74,7 @@ class HomeFragment : Fragment() {
         button_playing.setOnTouchListener { v, event ->
             when (event.action) {
                 ACTION_DOWN -> {
-                    homeViewModel.liveRecords.value?.first()?.apply {
+                    homeViewModel.liveRecords.value?.firstOrNull()?.apply {
                         homeViewModel.startPlaying(
                             this
                         )

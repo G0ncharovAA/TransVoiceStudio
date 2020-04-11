@@ -22,7 +22,7 @@ class FrequencyView : View {
     private val minValue = 1f
     private val maxValue = 2205f
     private val duration = maxValue - minValue
-    private val wFrequency = 75
+    private val wFrequency = 60
     private var rWidth = 0
 
     // Attributes
@@ -32,19 +32,24 @@ class FrequencyView : View {
     private var pos = 0
     private var samplingRate = 0
     private lateinit var magnitudes: FloatArray
-    private val colorFire =
-        intArrayOf(-0x1, -0x100, -0x10000, -0x1000000)
+    private var scaleCaption: String
     private var colors: IntArray
+    private var scaleColor: Int
+    private var fontColor: Int
 
     init {
         with(context.resources) {
+
+            scaleCaption = "    ${getString(R.string.herz)}"
+
             colors = arrayOf(
-                getColor(R.color.flag_outter),
-                getColor(R.color.flag_inner),
                 getColor(R.color.flag_center),
-                getColor(R.color.flag_inner_dark),
-                getColor(R.color.flag_outter_dark)
+                getColor(R.color.flag_inner),
+                getColor(R.color.flag_outter)
             ).toIntArray()
+
+            scaleColor = getColor(R.color.flag_outter_dark)
+            fontColor = getColor(R.color.flag_center)
         }
     }
 
@@ -135,18 +140,18 @@ class FrequencyView : View {
         // Draw frequency scale
         val ratio = 0.7f * resources.displayMetrics.density
         paint.textSize = 12f * ratio
-        paint.color = context.resources.getColor(R.color.flag_outter_dark)
+        paint.color = scaleColor
         canvas.drawRect(rWidth.toFloat(), 0f, mWidth.toFloat(), mHeight.toFloat(), paint)
-        paint.color = context.resources.getColor(R.color.flag_center)
+        paint.color = fontColor
         canvas.drawText(
-            context.getString(R.string.herz),
+            scaleCaption,
             rWidth.toFloat(),
             12 * ratio, paint
         )
         var i = 0
         while (i < (maxValue - 120)) {
             canvas.drawText(
-                " " + i,
+                "   $i",
                 rWidth.toFloat(),
                 mHeight * (1f - i.toFloat() / (maxValue)),
                 paint
