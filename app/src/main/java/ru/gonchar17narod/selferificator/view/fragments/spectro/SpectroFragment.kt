@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.view.fragments.dashboard
+package ru.gonchar17narod.selferificator.view.fragments.spectro
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,23 +8,23 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.fragment_spectro.*
 import ru.gonchar17narod.selferificator.R
 
-class DashboardFragment : Fragment() {
+class SpectroFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var spectroViewModel: SpectroViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        spectroViewModel =
+            ViewModelProvider(this).get(SpectroViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_spectro, container, false)
         val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        spectroViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
@@ -32,10 +32,10 @@ class DashboardFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         with(frequencies) {
-            setFFTResolution(dashboardViewModel.fftResolution)
-            setSamplingRate(dashboardViewModel.samplingRate)
+            setFFTResolution(spectroViewModel.fftResolution)
+            setSamplingRate(spectroViewModel.samplingRate)
         }
-        dashboardViewModel.liveTrunks.observe(
+        spectroViewModel.liveTrunks.observe(
             viewLifecycleOwner,
             Observer {
                 getTrunks(it)
@@ -46,16 +46,16 @@ class DashboardFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        dashboardViewModel.startRecording()
+        spectroViewModel.startRecording()
     }
 
     override fun onPause() {
-        dashboardViewModel.stopRecording()
+        spectroViewModel.stopRecording()
         super.onPause()
     }
 
     private fun getTrunks(recordBuffer: ShortArray) {
-        with(dashboardViewModel) {
+        with(spectroViewModel) {
             val n: Int = fftResolution
 
             // Trunks are consecutive n/2 length samples
@@ -84,7 +84,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun process() {
-        with(dashboardViewModel) {
+        with(spectroViewModel) {
             val n = fftResolution
             val log2_n = (Math.log(n.toDouble()) / Math.log(2.0)).toInt()
             soundEngine.shortToFloat(fftBuffer, re, n)

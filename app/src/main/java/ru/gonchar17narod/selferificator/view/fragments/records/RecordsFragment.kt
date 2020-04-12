@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.view.fragments.home
+package ru.gonchar17narod.selferificator.view.fragments.records
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -16,27 +16,25 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_records.*
+import kotlinx.android.synthetic.main.fragment_records.view.*
 import kotlinx.android.synthetic.main.item_record.view.*
 import ru.gonchar17narod.selferificator.R
 
-class HomeFragment : Fragment() {
+class RecordsFragment : Fragment() {
 
     private val recordsAdapter = RecordsAdapter()
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var recordsViewModel: RecordsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        recordsViewModel = ViewModelProvider(this).get(RecordsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_records, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(
+        recordsViewModel.text.observe(
             viewLifecycleOwner,
             Observer {
                 textView.text = it
@@ -46,7 +44,7 @@ class HomeFragment : Fragment() {
         root.records_recycler_view.adapter = recordsAdapter
         ItemTouchHelper(SwipeToDeleteCallback()).attachToRecyclerView(root.records_recycler_view)
 
-        homeViewModel.liveRecords.observe(
+        recordsViewModel.liveRecords.observe(
             viewLifecycleOwner,
             Observer {
                 root.records_recycler_view.adapter.let {
@@ -61,11 +59,11 @@ class HomeFragment : Fragment() {
         button_recording.setOnTouchListener { v, event ->
             when (event.action) {
                 ACTION_DOWN -> {
-                    homeViewModel.startRecording()
+                    recordsViewModel.startRecording()
                     media_indicator.text = getString(R.string.recording)
                 }
                 ACTION_UP -> {
-                    homeViewModel.stopRecording()
+                    recordsViewModel.stopRecording()
                     media_indicator.text = getString(R.string.idle)
                 }
             }
@@ -74,15 +72,15 @@ class HomeFragment : Fragment() {
         button_playing.setOnTouchListener { v, event ->
             when (event.action) {
                 ACTION_DOWN -> {
-                    homeViewModel.liveRecords.value?.firstOrNull()?.apply {
-                        homeViewModel.startPlaying(
+                    recordsViewModel.liveRecords.value?.firstOrNull()?.apply {
+                        recordsViewModel.startPlaying(
                             this
                         )
                         media_indicator.text = getString(R.string.playing)
                     }
                 }
                 ACTION_UP -> {
-                    homeViewModel.stopPlaying()
+                    recordsViewModel.stopPlaying()
                     media_indicator.text = getString(R.string.idle)
                 }
             }
@@ -113,21 +111,21 @@ class HomeFragment : Fragment() {
         ) = RecordHolder()
 
         override fun getItemCount() =
-            homeViewModel.liveRecords.value?.size ?: 0
+            recordsViewModel.liveRecords.value?.size ?: 0
 
         override fun onBindViewHolder(holder: RecordHolder, position: Int) {
-            homeViewModel.liveRecords.value?.get(position)?.apply {
+            recordsViewModel.liveRecords.value?.get(position)?.apply {
                 with(holder.itemView) {
                     text_record_name.text = file.name
                     if (playing) {
                         item_button_play.setImageResource(R.drawable.ic_pause)
                         item_button_play.setOnClickListener {
-                            homeViewModel.stopPlaying()
+                            recordsViewModel.stopPlaying()
                         }
                     } else {
                         item_button_play.setImageResource(R.drawable.ic_play)
                         item_button_play.setOnClickListener {
-                            homeViewModel.startPlaying(this@apply)
+                            recordsViewModel.startPlaying(this@apply)
                         }
                     }
                 }
@@ -149,8 +147,8 @@ class HomeFragment : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            homeViewModel.liveRecords.value?.get(viewHolder.adapterPosition)?.apply {
-                homeViewModel.deleteRecord(this)
+            recordsViewModel.liveRecords.value?.get(viewHolder.adapterPosition)?.apply {
+                recordsViewModel.deleteRecord(this)
             }
         }
     }

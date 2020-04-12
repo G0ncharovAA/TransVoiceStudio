@@ -10,7 +10,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import kotlinx.android.synthetic.main.fragment_dashboard.view.*
+import kotlinx.android.synthetic.main.fragment_spectro.view.*
 import ru.gonchar17narod.selferificator.R
 import kotlin.math.roundToInt
 
@@ -36,6 +36,7 @@ class FrequencyView : View {
     private var colors: IntArray
     private var scaleColor: Int
     private var fontColor: Int
+    private var backgroundDefaultColor: Int
 
     init {
         with(context.resources) {
@@ -50,6 +51,7 @@ class FrequencyView : View {
 
             scaleColor = getColor(R.color.flag_outter_dark)
             fontColor = getColor(R.color.flag_center)
+            backgroundDefaultColor = getColor(R.color.flag_outter)
         }
     }
 
@@ -100,7 +102,7 @@ class FrequencyView : View {
         paint.strokeWidth = 1f
 
         // Update buffer bitmap
-        paint.color = Color.BLACK
+        paint.color = backgroundDefaultColor
         this.canvas.drawLine(
             pos % rWidth.toFloat(),
             0f,

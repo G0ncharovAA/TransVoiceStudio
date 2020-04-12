@@ -1,12 +1,12 @@
-package ru.gonchar17narod.selferificator.view.fragments.dashboard
+package ru.gonchar17narod.selferificator.view.fragments.spectro
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import net.galmiza.android.engine.sound.SoundEngine
-import ru.gonchar17narod.selferificator.data.SpectreRepository
+import ru.gonchar17narod.selferificator.data.SpectroRepository
 
-class DashboardViewModel : ViewModel() {
+class SpectroViewModel : ViewModel() {
 
     val samplingRate = 44100
     val fftResolution =
@@ -15,7 +15,7 @@ class DashboardViewModel : ViewModel() {
         4096
     //8192
     private val continuousRecord =
-        SpectreRepository(samplingRate)
+        SpectroRepository(samplingRate)
     val soundEngine = SoundEngine().apply {
         initFSin()
     }
@@ -29,7 +29,7 @@ class DashboardViewModel : ViewModel() {
     val liveTrunks = MutableLiveData<ShortArray>()
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "This is spectro Fragment"
     }
     val text: LiveData<String> = _text
 

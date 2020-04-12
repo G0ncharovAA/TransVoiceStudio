@@ -4,7 +4,7 @@ import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder.AudioSource
 
-class SpectreRepository(private val samplingRate: Int) {
+class SpectroRepository(private val samplingRate: Int) {
 
     // Attributes
     private var audioRecord: AudioRecord? = null

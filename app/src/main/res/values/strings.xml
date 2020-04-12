@@ -19,6 +19,7 @@
         <item>http://personpsy.ru/</item>
         <item>http://www.transgendersurgeryworld.com/</item>
         <item>http://reconsurg.ru/</item>
+        <item>https://github.com/ichi-rika/speech-analysis</item>
     </string-array>
 
     <!-- Strings from spectre -->
@@ -26,4 +27,7 @@
     <string name="pay_this_record_or_stop_playing">Pay this record or stop playing</string>
     <string name="play_just_saved_record">Hold this button to play just saved record</string>
     <string name="hold_this_button_to_make_a_record">Hold this button to make a record</string>
+    <string name="records">Records</string>
+    <string name="spectro">Spectro</string>
+    <string name="feed">Feed</string>
 </resources>

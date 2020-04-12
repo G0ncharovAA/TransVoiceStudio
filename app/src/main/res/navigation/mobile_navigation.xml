@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_records">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="ru.gonchar17narod.selferificator.view.fragments.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_records"
+        android:name="ru.gonchar17narod.selferificator.view.fragments.records.RecordsFragment"
+        android:label="@string/records"
+        tools:layout="@layout/fragment_records" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="ru.gonchar17narod.selferificator.view.fragments.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_spectro"
+        android:name="ru.gonchar17narod.selferificator.view.fragments.spectro.SpectroFragment"
+        android:label="@string/spectro"
+        tools:layout="@layout/fragment_spectro" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="ru.gonchar17narod.selferificator.view.fragments.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_feed"
+        android:name="ru.gonchar17narod.selferificator.view.fragments.feed.FeedFragment"
+        android:label="@string/feed"
+        tools:layout="@layout/fragment_feed" />
 </navigation>

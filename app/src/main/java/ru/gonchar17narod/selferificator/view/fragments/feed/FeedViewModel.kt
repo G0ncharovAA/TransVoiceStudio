@@ -1,4 +1,4 @@
-package ru.gonchar17narod.selferificator.view.fragments.notifications
+package ru.gonchar17narod.selferificator.view.fragments.feed
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,13 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import ru.gonchar17narod.selferificator.business.FeedInteractor
-import ru.gonchar17narod.selferificator.business.FeedWebEntity
 import ru.gonchar17narod.selferificator.view.items.FeedWebItem
 
-class NotificationsViewModel : ViewModel() {
+class FeedViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+        value = "This is feed Fragment"
     }
     val text: LiveData<String> = _text
 

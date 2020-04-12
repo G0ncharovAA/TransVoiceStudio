@@ -1,23 +1,19 @@
-package ru.gonchar17narod.selferificator.view.fragments.home
+package ru.gonchar17narod.selferificator.view.fragments.records
 
 import android.app.Application
-import android.content.Context
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
-import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import ru.gonchar17narod.selferificator.App
 import ru.gonchar17narod.selferificator.business.MediaInteractor
 import ru.gonchar17narod.selferificator.business.RecordEntity
 import ru.gonchar17narod.selferificator.utlis.setupAudio
 import java.lang.Exception
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+class RecordsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+        value = "This is records Fragment"
     }
     val text: LiveData<String> = _text
     val liveRecords = MutableLiveData<List<RecordEntity>>()
