@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ru.gonchar17narod.selferificator.view.custom_views.FrequencyView
+    <ru.gonchar17narod.transvoicestudio.view.custom_views.FrequencyView
         android:id="@+id/frequencies"
         android:layout_width="0dp"
         android:layout_height="0dp"
