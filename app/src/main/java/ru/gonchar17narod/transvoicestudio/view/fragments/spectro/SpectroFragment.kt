@@ -23,10 +23,7 @@ class SpectroFragment : Fragment() {
         spectroViewModel =
             ViewModelProvider(this).get(SpectroViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_spectro, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        spectroViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+
         return root
     }
 

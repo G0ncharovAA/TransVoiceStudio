@@ -28,11 +28,6 @@ class SpectroViewModel : ViewModel() {
 
     val liveTrunks = MutableLiveData<ShortArray>()
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is spectro Fragment"
-    }
-    val text: LiveData<String> = _text
-
     init {
         loadEngine()
     }

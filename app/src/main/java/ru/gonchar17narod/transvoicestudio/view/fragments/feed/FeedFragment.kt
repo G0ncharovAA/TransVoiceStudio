@@ -23,10 +23,7 @@ class FeedFragment : Fragment() {
         feedViewModel =
             ViewModelProvider(this).get(FeedViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_feed, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        feedViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+
         return root
     }
 

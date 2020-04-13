@@ -9,7 +9,7 @@
     <string name="idle">Idle</string>
     <string name="recording">Recording</string>
     <string name="playing">Playing</string>
-    <string name="herz">Herz</string>
+    <string name="herz">Hz</string>
 
     <string-array name="items_web_links">
         <item>http://ts-info.ru/</item>
@@ -27,4 +27,5 @@
     <string name="records">Records</string>
     <string name="spectro">Spectro</string>
     <string name="feed">Feed</string>
+    <string name="animated_recording_playing_indicator">Animated recording/playing indicator</string>
 </resources>

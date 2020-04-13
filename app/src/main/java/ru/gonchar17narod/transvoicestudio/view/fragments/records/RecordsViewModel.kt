@@ -12,10 +12,6 @@ import java.lang.Exception
 
 class RecordsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is records Fragment"
-    }
-    val text: LiveData<String> = _text
     val liveRecords = MutableLiveData<List<RecordEntity>>()
 
     private val mMediaRecorder = MediaRecorder()

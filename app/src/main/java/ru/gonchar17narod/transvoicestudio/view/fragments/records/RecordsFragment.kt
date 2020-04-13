@@ -1,5 +1,7 @@
 package ru.gonchar17narod.transvoicestudio.view.fragments.records
 
+import android.animation.AnimatorInflater
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +12,6 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +25,8 @@ import ru.gonchar17narod.transvoicestudio.R
 class RecordsFragment : Fragment() {
 
     private val recordsAdapter = RecordsAdapter()
+    private lateinit var indicationAnimator: ObjectAnimator
+    private lateinit var reversedIndicationAnimator: ObjectAnimator
     private lateinit var recordsViewModel: RecordsViewModel
 
     override fun onCreateView(
@@ -33,13 +36,6 @@ class RecordsFragment : Fragment() {
     ): View? {
         recordsViewModel = ViewModelProvider(this).get(RecordsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_records, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        recordsViewModel.text.observe(
-            viewLifecycleOwner,
-            Observer {
-                textView.text = it
-            }
-        )
 
         root.records_recycler_view.adapter = recordsAdapter
         ItemTouchHelper(SwipeToDeleteCallback()).attachToRecyclerView(root.records_recycler_view)
@@ -60,11 +56,11 @@ class RecordsFragment : Fragment() {
             when (event.action) {
                 ACTION_DOWN -> {
                     recordsViewModel.startRecording()
-                    media_indicator.text = getString(R.string.recording)
+                    indicateRecordingState()
                 }
                 ACTION_UP -> {
                     recordsViewModel.stopRecording()
-                    media_indicator.text = getString(R.string.idle)
+                    indicateIdleState()
                 }
             }
             false
@@ -76,17 +72,52 @@ class RecordsFragment : Fragment() {
                         recordsViewModel.startPlaying(
                             this
                         )
-                        media_indicator.text = getString(R.string.playing)
+                        indicatePlayingState()
                     }
                 }
                 ACTION_UP -> {
                     recordsViewModel.stopPlaying()
-                    media_indicator.text = getString(R.string.idle)
+                    indicateIdleState()
                 }
             }
             false
         }
+        indicationAnimator =
+            (AnimatorInflater.loadAnimator(
+                context,
+                R.animator.rotation_animator
+            ) as ObjectAnimator).apply {
+                target = animated_indicator
+                start()
+            }
+        reversedIndicationAnimator =
+            (AnimatorInflater.loadAnimator(
+                context,
+                R.animator.rotation_animator_reversed
+            ) as ObjectAnimator).apply {
+                target = animated_indicator
+                start()
+            }
+        indicateIdleState()
         super.onActivityCreated(savedInstanceState)
+    }
+
+    private fun indicateIdleState() {
+        indicationAnimator.pause()
+        reversedIndicationAnimator.pause()
+        media_indicator.text = getString(R.string.idle)
+    }
+
+    private fun indicateRecordingState() {
+        indicationAnimator.pause()
+        reversedIndicationAnimator.resume()
+        media_indicator.text = getString(R.string.recording)
+    }
+
+    private fun indicatePlayingState() {
+        indicationAnimator.resume()
+        reversedIndicationAnimator.pause()
+        media_indicator.text = getString(R.string.playing)
     }
 
     private inner class RecordHolder(
