@@ -31,9 +31,6 @@
             android:name="ru.gonchar17narod.transvoicestudio.view.activities.MainActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
     </application>
 

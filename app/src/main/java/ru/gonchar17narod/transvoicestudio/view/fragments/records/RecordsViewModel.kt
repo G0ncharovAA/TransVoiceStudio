@@ -91,6 +91,7 @@ class RecordsViewModel(application: Application) : AndroidViewModel(application)
 
     override fun onCleared() {
         mMediaRecorder.release()
+        mediaPlayer?.release()
     }
 
     private fun resetPlayingStates() =
