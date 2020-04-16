@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.spectro.SpectroFragment">
 
-    <ru.gonchar17narod.transvoicestudio.view.custom_views.FrequencyView
+    <com.gmail.sasha.inverse.transvoicestudio.view.custom_views.FrequencyView
         android:id="@+id/frequencies"
         android:layout_width="0dp"
         android:layout_height="0dp"

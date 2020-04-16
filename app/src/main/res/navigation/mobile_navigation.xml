@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_records"
-        android:name="ru.gonchar17narod.transvoicestudio.view.fragments.records.RecordsFragment"
+        android:name="com.gmail.sasha.inverse.transvoicestudio.view.fragments.records.RecordsFragment"
         android:label="@string/records"
         tools:layout="@layout/fragment_records" />
 
     <fragment
         android:id="@+id/navigation_spectro"
-        android:name="ru.gonchar17narod.transvoicestudio.view.fragments.spectro.SpectroFragment"
+        android:name="com.gmail.sasha.inverse.transvoicestudio.view.fragments.spectro.SpectroFragment"
         android:label="@string/spectro"
         tools:layout="@layout/fragment_spectro" />
 
     <fragment
         android:id="@+id/navigation_feed"
-        android:name="ru.gonchar17narod.transvoicestudio.view.fragments.feed.FeedFragment"
+        android:name="com.gmail.sasha.inverse.transvoicestudio.view.fragments.feed.FeedFragment"
         android:label="@string/feed"
         tools:layout="@layout/fragment_feed" />
 </navigation>

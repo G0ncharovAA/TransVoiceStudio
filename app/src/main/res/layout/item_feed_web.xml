@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="6dp">
 
-    <ru.gonchar17narod.transvoicestudio.view.custom_views.LollipopFixedWebView
+    <com.gmail.sasha.inverse.transvoicestudio.view.custom_views.LollipopFixedWebView
         android:id="@+id/item_feed_web_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
