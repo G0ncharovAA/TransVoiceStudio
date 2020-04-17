@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("ru.gonchar17narod.selferificator", appContext.packageName)
+        assertEquals("com.gmail.sasha.inverse.transvoicestudio", appContext.packageName)
     }
 }
