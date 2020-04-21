@@ -22,7 +22,6 @@
             android:focusable="true"
             android:padding="10dp"
             android:src="@drawable/ic_play"
-            android:text="@string/stop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
