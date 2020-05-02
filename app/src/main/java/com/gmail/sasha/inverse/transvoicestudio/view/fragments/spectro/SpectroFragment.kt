@@ -2,6 +2,7 @@ package com.gmail.sasha.inverse.transvoicestudio.view.fragments.spectro
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -37,6 +38,19 @@ class SpectroFragment : Fragment() {
                 getTrunks(it)
             }
         )
+
+        frequencies.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                  frequencies.setScaleMode(true)
+                }
+                MotionEvent.ACTION_UP -> {
+                   frequencies.setScaleMode(false)
+                }
+            }
+            true
+        }
+
         super.onActivityCreated(savedInstanceState)
     }
 

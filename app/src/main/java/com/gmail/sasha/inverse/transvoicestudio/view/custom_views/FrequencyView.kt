@@ -16,9 +16,15 @@ class FrequencyView : View {
     private var mWidth = 0
     private var mHeight = 0
 
+    private val BASE_MAXVALUE = 2205f
+    private val BASE_SCALE_FACTOR = 10
+
+    private val SCALED_MAXVALUE = 551f
+    private val SCALED_SCALE_FACTOR = 40
+
     private val minValue = 1f
-    private val maxValue = 2205f
-    private val duration = maxValue - minValue
+    private var maxValue = BASE_MAXVALUE
+    private var scaleFactor = BASE_SCALE_FACTOR
     private val wFrequency = 60
     private var rWidth = 0
 
@@ -90,6 +96,15 @@ class FrequencyView : View {
         System.arraycopy(m, 0, magnitudes, 0, m.size)
     }
 
+    fun setScaleMode(mode: Boolean) =
+        if (mode) {
+            maxValue = SCALED_MAXVALUE
+            scaleFactor = SCALED_SCALE_FACTOR
+        } else {
+            maxValue = BASE_MAXVALUE
+            scaleFactor = BASE_SCALE_FACTOR
+        }
+
     /**
      * Called whenever a redraw is needed
      * Renders spectrogram and scale on the right
@@ -110,7 +125,9 @@ class FrequencyView : View {
 
         for (i in 0 until mHeight) {
             var j = getValueFromRelativePosition(
-                ((mHeight - i).toFloat() / mHeight) / 10,
+                ((mHeight - i) / mHeight).toFloat()
+                        / scaleFactor
+                ,
                 minValue,
                 maxValue
             )
@@ -148,7 +165,7 @@ class FrequencyView : View {
             12 * ratio, paint
         )
         var i = 0
-        while (i < (maxValue - 120)) {
+        while (i < (maxValue - 20)) {
             canvas.drawText(
                 "   $i",
                 rWidth.toFloat(),
