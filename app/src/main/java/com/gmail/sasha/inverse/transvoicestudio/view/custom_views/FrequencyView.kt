@@ -20,7 +20,7 @@ class FrequencyView : View {
     private val BASE_SCALE_FACTOR = 10
 
     private val SCALED_MAXVALUE = 551f
-    private val SCALED_SCALE_FACTOR = 40
+    private val SCALED_SCALE_FACTOR = 45
 
     private val minValue = 1f
     private var maxValue = BASE_MAXVALUE
@@ -125,7 +125,7 @@ class FrequencyView : View {
 
         for (i in 0 until mHeight) {
             var j = getValueFromRelativePosition(
-                ((mHeight - i) / mHeight).toFloat()
+                ((mHeight - i).toFloat() / mHeight)
                         / scaleFactor
                 ,
                 minValue,
