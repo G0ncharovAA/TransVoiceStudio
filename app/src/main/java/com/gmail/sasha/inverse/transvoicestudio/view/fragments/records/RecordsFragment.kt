@@ -159,6 +159,10 @@ class RecordsFragment : Fragment() {
                             recordsViewModel.startPlaying(this@apply)
                         }
                     }
+                    this.setOnLongClickListener {
+                        //TODO: Share this record
+                        return@setOnLongClickListener true
+                    }
                 }
             }
         }
