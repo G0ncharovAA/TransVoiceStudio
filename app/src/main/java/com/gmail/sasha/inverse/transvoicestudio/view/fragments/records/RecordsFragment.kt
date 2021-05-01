@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_records.*
 import kotlinx.android.synthetic.main.fragment_records.view.*
 import kotlinx.android.synthetic.main.item_record.view.*
 import com.gmail.sasha.inverse.transvoicestudio.R
+import com.gmail.sasha.inverse.transvoicestudio.utlis.shareFile
 
 class RecordsFragment : Fragment() {
 
@@ -160,7 +161,9 @@ class RecordsFragment : Fragment() {
                         }
                     }
                     this.setOnLongClickListener {
-                        //TODO: Share this record
+                        activity?.shareFile(
+                            this@apply.file
+                        )
                         return@setOnLongClickListener true
                     }
                 }

@@ -13,6 +13,12 @@ android {
         versionCode 3
         versionName "0.3"
 
+        def fileProviderAuthority = "${applicationId}.fileprovider"
+        buildConfigField("String", "FILES_AUTHORITY", "\"$fileProviderAuthority\"")
+        manifestPlaceholders = [
+                authority: fileProviderAuthority
+        ]
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
