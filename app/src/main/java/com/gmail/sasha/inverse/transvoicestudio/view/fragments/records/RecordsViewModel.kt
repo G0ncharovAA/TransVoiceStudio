@@ -14,7 +14,11 @@ class RecordsViewModel(application: Application) : AndroidViewModel(application)
 
     val liveRecords = MutableLiveData<List<RecordEntity>>()
 
-    private val mMediaRecorder = MediaRecorder()
+    private val mMediaRecorder = MediaRecorder().apply {
+        setAudioSource(MediaRecorder.AudioSource.MIC);
+        setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+        setAudioEncoder(MediaRecorder.AudioEncoder.AAC_ELD);
+    }
     private var mediaPlayer: MediaPlayer? = null
 
     init {

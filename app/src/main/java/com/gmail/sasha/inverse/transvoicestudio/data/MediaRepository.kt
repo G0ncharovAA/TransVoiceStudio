@@ -23,14 +23,15 @@ object MediaRepository {
     fun getNewFile(): File =
         File(
             recordsFolder,
-            "record_${System.currentTimeMillis()}.mp3"
+            "record_${System.currentTimeMillis()}.aac"
         )
 
     fun getAllRecords() =
         recordsFolder.listFiles()
             ?.toList()
             ?.filter {
-                it.name.endsWith(".mp3", true)
+                it.name.endsWith(".mp3", true) or
+                        it.name.endsWith(".aac", true)
             }
 
     suspend fun deleteRecord(record: RecordEntity) =
@@ -39,5 +40,5 @@ object MediaRepository {
         }
 
     fun deleteLastRecord() =
-       getAllRecords()?.firstOrNull()?.deleteRecursively()
+        getAllRecords()?.firstOrNull()?.deleteRecursively()
 }
