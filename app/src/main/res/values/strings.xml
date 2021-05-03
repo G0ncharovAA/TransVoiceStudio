@@ -23,4 +23,5 @@
     <string name="spectro">Spectro</string>
     <string name="feed">Feed</string>
     <string name="animated_recording_playing_indicator">Animated recording/playing indicator</string>
+    <string name="send_via">Send via:</string>
 </resources>

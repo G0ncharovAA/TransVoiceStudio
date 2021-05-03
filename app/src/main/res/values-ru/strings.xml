@@ -23,4 +23,5 @@
     <string name="spectro">Спектр</string>
     <string name="feed">Лента</string>
     <string name="animated_recording_playing_indicator">Анимированный индикатор воспроизведения/записи</string>
+    <string name="send_via">Отправить с помощью:</string>
 </resources>

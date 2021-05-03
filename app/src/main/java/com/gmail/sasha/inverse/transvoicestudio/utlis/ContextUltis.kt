@@ -5,10 +5,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.gmail.sasha.inverse.transvoicestudio.BuildConfig
+import com.gmail.sasha.inverse.transvoicestudio.R
 import java.io.File
 
 fun Context.isMicrophoneAvailable() =
@@ -26,13 +26,11 @@ fun Activity.shareFile(file: File) =
             file
         )
     ) {
-        ShareCompat.IntentBuilder.from(this@shareFile).setStream(
-            this
-        ).intent.apply {
-            data = this@with
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            resolveActivity(getPackageManager())?.let {
-                startActivity(this);
-            }
+       Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, this@with)
+            type = "audio/*"
+
+           startActivity(Intent.createChooser(this, getString(R.string.send_via)))
         }
     }
