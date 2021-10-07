@@ -26,11 +26,11 @@ fun Activity.shareFile(file: File) =
             file
         )
     ) {
-       Intent().apply {
+        Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_STREAM, this@with)
             type = "audio/*"
 
-           startActivity(Intent.createChooser(this, getString(R.string.send_via)))
+            startActivity(Intent.createChooser(this, getString(R.string.send_via)))
         }
     }
