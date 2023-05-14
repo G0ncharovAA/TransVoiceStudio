@@ -12,4 +12,9 @@
     <color name="flag_center">#FFFFFF</color>
     <color name="flag_inner_dark">#FDA8DF</color>
     <color name="flag_outter_dark">#0069B5</color>
+
+    <!-- Guide colors -->
+    <color name="guide_lightblue">#97E3FB</color>
+    <color name="guide_pink">#f2c7f2</color>
+    <color name="guide_blue">#5c6db5</color>
 </resources>

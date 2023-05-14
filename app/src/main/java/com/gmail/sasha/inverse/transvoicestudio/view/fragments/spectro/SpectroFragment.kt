@@ -6,31 +6,29 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_spectro.*
 import com.gmail.sasha.inverse.transvoicestudio.R
+import com.gmail.sasha.inverse.transvoicestudio.databinding.FragmentSpectroBinding
 
 class SpectroFragment : Fragment() {
 
-    private lateinit var spectroViewModel: SpectroViewModel
-
+    private val spectroViewModel: SpectroViewModel by viewModels()
+    private var binding: FragmentSpectroBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        spectroViewModel =
-            ViewModelProvider(this).get(SpectroViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_spectro, container, false)
-
-        return root
+        binding = FragmentSpectroBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        with(frequencies) {
-            setFFTResolution(spectroViewModel.fftResolution)
-            setSamplingRate(spectroViewModel.samplingRate)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.frequencies?.let {
+            it.setFFTResolution(spectroViewModel.fftResolution)
+            it.setSamplingRate(spectroViewModel.samplingRate)
         }
         spectroViewModel.liveTrunks.observe(
             viewLifecycleOwner,
@@ -38,20 +36,17 @@ class SpectroFragment : Fragment() {
                 getTrunks(it)
             }
         )
-
-        frequencies.setOnTouchListener { v, event ->
+        binding?.frequencies?.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                  frequencies.setScaleMode(true)
+                    binding?.frequencies?.setScaleMode(true)
                 }
                 MotionEvent.ACTION_UP -> {
-                   frequencies.setScaleMode(false)
+                    binding?.frequencies?.setScaleMode(false)
                 }
             }
             true
         }
-
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onResume() {
@@ -116,9 +111,9 @@ class SpectroFragment : Fragment() {
 
             soundEngine.fft(re, im, log2_n, 0) // Move into frquency domain
             soundEngine.toPolar(re, im, n) // Move to polar base
-            frequencies.setMagnitudes(re)
+            binding?.frequencies?.setMagnitudes(re)
             activity?.runOnUiThread {
-                frequencies.invalidate()
+                binding?.frequencies?.invalidate()
             }
         }
     }

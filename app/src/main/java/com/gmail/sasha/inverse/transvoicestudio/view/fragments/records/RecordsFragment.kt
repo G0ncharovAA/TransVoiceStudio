@@ -13,14 +13,13 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_records.*
-import kotlinx.android.synthetic.main.fragment_records.view.*
-import kotlinx.android.synthetic.main.item_record.view.*
 import com.gmail.sasha.inverse.transvoicestudio.R
+import com.gmail.sasha.inverse.transvoicestudio.databinding.FragmentRecordsBinding
+import com.gmail.sasha.inverse.transvoicestudio.databinding.ItemRecordBinding
 import com.gmail.sasha.inverse.transvoicestudio.utlis.shareFile
 
 class RecordsFragment : Fragment() {
@@ -28,32 +27,31 @@ class RecordsFragment : Fragment() {
     private val recordsAdapter = RecordsAdapter()
     private lateinit var indicationAnimator: ObjectAnimator
     private lateinit var reversedIndicationAnimator: ObjectAnimator
-    private lateinit var recordsViewModel: RecordsViewModel
+    private val recordsViewModel: RecordsViewModel by viewModels()
+    private var binding : FragmentRecordsBinding?  = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        recordsViewModel = ViewModelProvider(this).get(RecordsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_records, container, false)
-
-        root.records_recycler_view.adapter = recordsAdapter
-        ItemTouchHelper(SwipeToDeleteCallback()).attachToRecyclerView(root.records_recycler_view)
-
         recordsViewModel.liveRecords.observe(
             viewLifecycleOwner,
             Observer {
-                root.records_recycler_view.adapter.let {
+                binding?.recordsRecyclerView?.adapter.let {
                     it?.notifyDataSetChanged()
                 }
             }
         )
-        return root
+        binding = FragmentRecordsBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        button_recording.setOnTouchListener { v, event ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding?.recordsRecyclerView?.adapter = recordsAdapter
+        ItemTouchHelper(SwipeToDeleteCallback()).attachToRecyclerView(binding?.recordsRecyclerView)
+        binding?.buttonRecording?.setOnTouchListener { v, event ->
             when (event.action) {
                 ACTION_DOWN -> {
                     recordsViewModel.startRecording()
@@ -66,7 +64,7 @@ class RecordsFragment : Fragment() {
             }
             false
         }
-        button_playing.setOnTouchListener { v, event ->
+        binding?.buttonPlaying?.setOnTouchListener { v, event ->
             when (event.action) {
                 ACTION_DOWN -> {
                     recordsViewModel.liveRecords.value?.firstOrNull()?.apply {
@@ -88,7 +86,7 @@ class RecordsFragment : Fragment() {
                 context,
                 R.animator.rotation_animator
             ) as ObjectAnimator).apply {
-                target = animated_indicator
+                target = binding?.animatedIndicator
                 start()
             }
         reversedIndicationAnimator =
@@ -96,29 +94,27 @@ class RecordsFragment : Fragment() {
                 context,
                 R.animator.rotation_animator_reversed
             ) as ObjectAnimator).apply {
-                target = animated_indicator
+                target = binding?.animatedIndicator
                 start()
             }
         indicateIdleState()
-        super.onActivityCreated(savedInstanceState)
     }
-
     private fun indicateIdleState() {
         indicationAnimator.pause()
         reversedIndicationAnimator.pause()
-        media_indicator.text = getString(R.string.idle)
+        binding?.mediaIndicator?.text = getString(R.string.idle)
     }
 
     private fun indicateRecordingState() {
         indicationAnimator.pause()
         reversedIndicationAnimator.resume()
-        media_indicator.text = getString(R.string.recording)
+        binding?.mediaIndicator?.text = getString(R.string.recording)
     }
 
     private fun indicatePlayingState() {
         indicationAnimator.resume()
         reversedIndicationAnimator.pause()
-        media_indicator.text = getString(R.string.playing)
+        binding?.mediaIndicator?.text = getString(R.string.playing)
     }
 
     private inner class RecordHolder(
@@ -136,7 +132,6 @@ class RecordsFragment : Fragment() {
     ) : RecyclerView.ViewHolder(itemView)
 
     private inner class RecordsAdapter : RecyclerView.Adapter<RecordHolder>() {
-
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -148,15 +143,16 @@ class RecordsFragment : Fragment() {
         override fun onBindViewHolder(holder: RecordHolder, position: Int) {
             recordsViewModel.liveRecords.value?.get(position)?.apply {
                 with(holder.itemView) {
-                    text_record_name.text = file.name
+                    val binding = ItemRecordBinding.bind(this)
+                    binding.textRecordName.text = file.name
                     if (playing) {
-                        item_button_play.setImageResource(R.drawable.ic_pause)
-                        item_button_play.setOnClickListener {
+                        binding.itemButtonPlay.setImageResource(R.drawable.ic_pause)
+                        binding.itemButtonPlay.setOnClickListener {
                             recordsViewModel.stopPlaying()
                         }
                     } else {
-                        item_button_play.setImageResource(R.drawable.ic_play)
-                        item_button_play.setOnClickListener {
+                        binding.itemButtonPlay.setImageResource(R.drawable.ic_play)
+                        binding.itemButtonPlay.setOnClickListener {
                             recordsViewModel.startPlaying(this@apply)
                         }
                     }
