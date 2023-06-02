@@ -48,9 +48,9 @@
     <string name="stop_at_highest">Stop at the very top of swallowing;</string>
     <string name="exhale_out">Breath out, maintaining the upward position of the larynx.</string>
     <string name="false_folds">False folds</string>
-    <string name="cannot_control_directly">Unfortunately, there is no mean to control false folds explicitly. However, false folds </string>
-    <string name="inner_space_shrinking">Это сокращает внутреннее пространство голосового аппарата, значительно повышая его резонансную частоту - тембр.</string>
-    <string name="grounded_breath">Дыхание - “постановка на опору”</string>
+    <string name="cannot_control_directly">Unfortunately, there is no mean to control false folds explicitly. However, they folds to the sides of throat when you smiling or laughing</string>
+    <string name="inner_space_shrinking">This flattens inner space of the voice box, increasing its resonant frequency significantly.</string>
+    <string name="grounded_breath">Breathing - “Supported singing”</string>
     <string name="belly_breath">Издавать звуки на выдохе животом - и есть то, что называют “петь на опоре”.</string>
     <string name="ground_voice_and_stick_it_to_the_soft_pallete">“Поставить голос на опору и упереть в нёбо”</string>
     <string name="soft_pallete">Мягкое нёбо</string>

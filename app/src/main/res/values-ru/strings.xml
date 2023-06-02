@@ -49,7 +49,7 @@
     <string name="exhale_out">Выдохнуть, сохраняя приподнятое положение гортани.</string>
     <string name="false_folds">Ложные голосовые связки(False folds)</string>
     <string name="cannot_control_directly">К сожалению, не представляется возможным повлиять на ложные связки непосредственно, однако оказалось, что они прижимаются к стенкам гортани при улыбке и смехе.</string>
-    <string name="inner_space_shrinking">Это сокращает внутреннее пространство голосового аппарата, значительно повышая его резонансную частоту - тембр.</string>
+    <string name="inner_space_shrinking">Это сглаживает внутреннее пространство голосового аппарата, значительно повышая его резонансную частоту - тембр.</string>
     <string name="grounded_breath">Дыхание - “постановка на опору”</string>
     <string name="belly_breath">Издавать звуки на выдохе животом - и есть то, что называют “петь на опоре”.</string>
     <string name="ground_voice_and_stick_it_to_the_soft_pallete">“Поставить голос на опору и упереть в нёбо”</string>
